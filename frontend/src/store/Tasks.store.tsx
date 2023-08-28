@@ -3,7 +3,7 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { Task } from "../interfaces";
-import { createTask, deleteAllTask, deleteTask, getTasks, importTask, updateTask } from "../components/Service/task";
+import { completedTask, createTask, deleteAllTask, deleteTask, getTasks, importTask, updateTask } from "../components/Service/task";
 
 
 
@@ -42,7 +42,7 @@ const tasksSlice = createSlice({
       const newTasksList = state.tasks.filter(
         (task) => task.id !== action.payload
       );
-      deleteTask(action.payload.id, token)
+      deleteTask(action.payload, token)
       state.tasks = newTasksList;
     },
     markAsImportant(state, action: PayloadAction<string>) {
@@ -52,7 +52,6 @@ const tasksSlice = createSlice({
       
       newTaskFavorited!.important = !newTaskFavorited!.important;
       importTask(action.payload, newTaskFavorited!.important,token);
-
     },
     editTask(state, action: PayloadAction<Task>) {
       updateTask(action.payload, token);
@@ -65,11 +64,13 @@ const tasksSlice = createSlice({
       state.tasks[indexTask] = action.payload;
     },
     toggleTaskCompleted(state, action: PayloadAction<string>) {
+      
       const taskId = action.payload;
 
       const currTask = state.tasks.find((task) => task.id === taskId)!;
 
       currTask.completed = !currTask.completed;
+      completedTask(action.payload, currTask.completed,token);
     },
     deleteAllData(state) {
       deleteAllTask(token);

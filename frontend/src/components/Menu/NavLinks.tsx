@@ -6,15 +6,7 @@ const links = [
   {
     name: "All tasks",
     path: "/",
-  },
-    {
-    name: "Completed tasks",
-    path: "/completed",
-  },
-  {
-    name: "Uncompleted tasks",
-    path: "/uncompleted",
-  },
+  }
 ];
 
 const NavLinks: React.FC<{ classActive: string }> = ({ classActive }) => {

@@ -3,10 +3,8 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 class Task {
-  constructor(title, dir, description, date, completed, important) {
-    if (!this.id) {
-      this.id = uuid();
-    }
+  constructor(id, title, dir, description, date, completed, important) {
+    this.id = id;
     this.title = title;
     this.dir = dir;
     this.description = description;
@@ -34,7 +32,6 @@ class Task {
   }
 
   updateTask() {
-    console.log(this);
     return prisma.task.update({
       data: {
         id: this.id,
@@ -42,7 +39,8 @@ class Task {
         dir: this.dir,
         description: this.description,
         date: this.date,
-        updatedAt: date.now(),
+        completed: this.completed,
+        important: this.important,
       },
       where: {
         id: this.id,
@@ -60,13 +58,23 @@ class Task {
       },
     });
   }
-  importantTask() {
+  importantTask(id, important) {
     return prisma.task.update({
-      where: {
-        id: this.id,
-      },
       data: {
-        important: this.important,
+        important: important,
+      },
+      where: {
+        id: id,
+      },
+    });
+  }
+  completedTask(id, completed) {
+    return prisma.task.update({
+      data: {
+        completed: completed,
+      },
+      where: {
+        id: id,
       },
     });
   }

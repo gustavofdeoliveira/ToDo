@@ -76,10 +76,10 @@ const deleteTask = (req, res) => {
 };
 
 const updateTask = (req, res) => {
-  const { title, dir,  description, date, completed,important } = req.body;
-
-  const task = new taskService.Task( title, dir, description, date, completed,important);
-
+  const {id, title, dir,  description, date, completed,important } = req.body;
+  
+  const task = new taskService.Task(id, title, dir, description, date, completed,important);
+  
   task.updateTask().then((resul) => {
     if (resul.type === "error") {
       res.status(500).json({
@@ -95,8 +95,25 @@ const updateTask = (req, res) => {
 
 const importantTask = (req, res) => {
   const { id, important } = req.body;
-  const task = new taskService.Task(id, important);
-  task.importantTask().then((resul) => {
+  const task = new taskService.Task();
+  task.importantTask(id,important).then((resul) => {
+    if (resul.type === "error") {
+      res.status(500).json({
+        error: resul.message,
+      });
+    } else {
+      res.status(200).json({
+        message: resul.message,
+      });
+    }
+  });
+};
+
+
+const completedTask = (req, res) => {
+  const { id, completed } = req.body;
+  const task = new taskService.Task();
+  task.completedTask(id,completed).then((resul) => {
     if (resul.type === "error") {
       res.status(500).json({
         error: resul.message,
@@ -116,5 +133,6 @@ module.exports = {
   deleteAll,
   updateTask,
   deleteTask,
-  importantTask
+  importantTask,
+  completedTask
 };
