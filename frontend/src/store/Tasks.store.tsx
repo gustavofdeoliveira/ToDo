@@ -3,7 +3,7 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { Task } from "../interfaces";
-import { deleteAllTask, getTasks } from "../components/Service/task";
+import { createTask, deleteAllTask, deleteTask, getTasks, importTask, updateTask } from "../components/Service/task";
 
 
 
@@ -15,20 +15,7 @@ const getSavedDirectories = (): string[] => {
 
 const token = localStorage.getItem("token") || "";
 
-const tasks = getTasks(token);
-
-
-const defaultTasks: Task[] = [
-  
-  {
-    title: "Task One",
-    important: false,
-    description: "Write your description",
-    date: "2023-07-22",
-    dir: "Main",
-    completed: true,
-    id: "Task1",
-  },
+const defaultTasks: Task[] = [ 
 ];
 
 const initialState: {
@@ -48,26 +35,31 @@ const tasksSlice = createSlice({
     },
 
     addNewTask(state, action: PayloadAction<Task>) {
+      createTask(action.payload, token);
       state.tasks = [action.payload, ...state.tasks];
     },
     removeTask(state, action) {
       const newTasksList = state.tasks.filter(
         (task) => task.id !== action.payload
       );
+      deleteTask(action.payload.id, token)
       state.tasks = newTasksList;
     },
     markAsImportant(state, action: PayloadAction<string>) {
       const newTaskFavorited = state.tasks.find(
         (task) => task.id === action.payload
       );
+      
       newTaskFavorited!.important = !newTaskFavorited!.important;
+      importTask(action.payload, newTaskFavorited!.important,token);
+
     },
     editTask(state, action: PayloadAction<Task>) {
       const taskId = action.payload.id;
-
       const newTaskEdited: Task = state.tasks.find(
         (task: Task) => task.id === taskId
       )!;
+      updateTask(action.payload, token);
       const indexTask = state.tasks.indexOf(newTaskEdited);
       state.tasks[indexTask] = action.payload;
     },

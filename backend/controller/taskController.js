@@ -56,12 +56,65 @@ const deleteAll = (req, res) => {
         message: resul.message,
       });
     }
-  }
-  )}
+  });
+};
+
+const deleteTask = (req, res) => {
+  const { id } = req.body;
+  const task = new taskService.Task(id);
+  task.deleteTask().then((resul) => {
+    if (resul.type === "error") {
+      res.status(500).json({
+        error: resul.message,
+      });
+    } else {
+      res.status(200).json({
+        message: resul.message,
+      });
+    }
+  });
+};
+
+const updateTask = (req, res) => {
+  const { id, title, dir, date, description } = req.body;
+
+  const task = new taskService.Task(id, title, dir, description, date);
+
+  task.updateTask().then((resul) => {
+    if (resul.type === "error") {
+      res.status(500).json({
+        error: resul.message,
+      });
+    } else {
+      res.status(200).json({
+        message: resul.message,
+      });
+    }
+  });
+};
+
+const importantTask = (req, res) => {
+  const { id, important } = req.body;
+  const task = new taskService.Task(id, important);
+  task.importantTask().then((resul) => {
+    if (resul.type === "error") {
+      res.status(500).json({
+        error: resul.message,
+      });
+    } else {
+      res.status(200).json({
+        message: resul.message,
+      });
+    }
+  });
+};
 
 //Exporta as funções do controller para o ROUTER
 module.exports = {
   createTask,
   getTasks,
   deleteAll,
+  updateTask,
+  deleteTask,
+  importantTask
 };

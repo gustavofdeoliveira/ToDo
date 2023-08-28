@@ -48,3 +48,47 @@ export const deleteAllTask = async (token: string) => {
     });
     return response.data;
 }
+
+export const updateTask = async (task: Task, token: string) => {
+    const response = await axios.patch(`${API_URL}/update`, 
+    {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        data: {
+            "id": task.id,
+            "title": task.title,
+            "dir": task.dir,
+            "description": task.description,
+            "date": task.date,
+        }
+    });
+    return response.data;
+}
+
+export const deleteTask = async (id: string, token: string) => {
+    const response = await axios.delete(`${API_URL}/delete`, 
+    {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        data: {
+            "id": id,
+        }
+    });
+    return response.data;
+}
+
+export const importTask = async (id: string, important: boolean, token: string) => {
+    const response = await axios.patch(`${API_URL}/importTask`, 
+    {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        data: {
+            "id": id,
+            "important": important,
+        }
+    });
+    return response.data;
+}

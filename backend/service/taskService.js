@@ -1,16 +1,9 @@
 const { v4: uuid } = require("uuid");
 const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 class Task {
-  constructor(
-    title,
-    dir,
-    description,
-    date,
-    completed,
-    important,
-  ) {
+  constructor(title, dir, description, date, completed, important) {
     if (!this.id) {
       this.id = uuid();
     }
@@ -20,7 +13,6 @@ class Task {
     this.date = date;
     this.completed = completed;
     this.important = important;
-
   }
 
   createTask() {
@@ -34,13 +26,13 @@ class Task {
         completed: this.completed,
         important: this.important,
       },
-    })
+    });
   }
 
   getTasks() {
-    return prisma.task.findMany()
+    return prisma.task.findMany();
   }
-  
+
   updateTask() {
     return prisma.task.update({
       where: {
@@ -51,17 +43,31 @@ class Task {
         dir: this.dir,
         description: this.description,
         date: this.date,
-        completed: this.completed,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  deleteAll() {
+    return prisma.task.deleteMany();
+  }
+  deleteTask() {
+    return prisma.task.delete({
+      where: {
+        id: this.id,
+      },
+    });
+  }
+  importantTask() {
+    return prisma.task.update({
+      where: {
+        id: this.id,
+      },
+      data: {
         important: this.important,
       },
-    })
+    });
   }
-  
-  deleteAll() {
-    return prisma.task.deleteMany()
-  }
-
-
 }
 
-module.exports = { Task }
+module.exports = { Task };

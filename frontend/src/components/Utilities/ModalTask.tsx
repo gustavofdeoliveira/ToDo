@@ -100,7 +100,6 @@ const ModalCreateTask: React.FC<{
 
   const addNewTaskHandler = (event: React.FormEvent): void => {
     event.preventDefault();
-    const token = localStorage.getItem('token') || "";
 
     const taskTitle = taskTitleRef.current!.value || "";
     const taskDate = taskDateRef.current!.value || "";
@@ -120,7 +119,6 @@ const ModalCreateTask: React.FC<{
         id: task?.id ? task.id : Date.now().toString(),
       };
       onConfirm(newTask);
-      createTask(newTask, token);
       onClose();
     }
   };
