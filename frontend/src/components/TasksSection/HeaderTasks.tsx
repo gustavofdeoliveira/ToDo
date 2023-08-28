@@ -61,34 +61,11 @@ const HeaderTasks: React.FC = () => {
                 <MenuIcon/>
             </button>
             <SearchField/>
-            <div className="text-center">
-        <span className="text-slate-600 dark:text-slate-200 uppercase font-bold text-sm block xl:hidden">
-          TODO
-        </span>
-                <TasksDone/>
-            </div>
+           
             <div className="flex flex-1">
-                <Notification/>
                 <DeleteTasks/>
                 <DarkMode/>
-                <BtnAddTask className="hidden xl:block shadow-slate-400  dark:shadow-slate-900 sm:shadow-transparent"/>
-                <button
-                    className="block xl:hidden"
-                    onClick={() => {
-                        BackState = true
-                        BackSet(true)
-                        setTimeout(() => {
-                            localStorage.setItem('Alert', JSON.stringify("Showed"));
-                        }, 2000);
-
-                    }}
-                >
-                    <AppsIcon className="shadow-slate-400 dark:shadow-slate-900 sm:shadow-transparent"
-                              style={{fontSize: 33}}/>
-                </button>
-                <If condition={BackState}>
-                    <BackDrop BackState={BackState} BackSet={BackSet}/>
-                </If>
+                
 
             </div>
         </header>

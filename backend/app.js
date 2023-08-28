@@ -13,11 +13,13 @@ app.use(bodyParser.urlencoded({ // Irá suportar urlenconded
 
 const PORT = process.env.PORT || 3001;
 
-const taskRouter = require('./routes/task');
+const taskRouter = require('./routes/taksRoute');
+const authRouter= require('./routes/authRoute');
 
 app.use('/task', taskRouter);
+app.use('/auth', authRouter);
 
-app.use(express.static("../Frontend"))
+app.use(express.static("../frontend"))
 
 app.use((err, req, res, next) => {    
     if (err instanceof Error) {

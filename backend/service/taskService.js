@@ -1,71 +1,67 @@
-const sqlite3 = require('sqlite3').verbose();
-const sqlite = require('sqlite')
+const { v4: uuid } = require("uuid");
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient()
 
-//Classe para o match da vaga com a usuária
 class Task {
-    constructor (id, date, title, description, status, isImportant, createdAt, updatedAt) {
-        this.id = id
-        this.date = date
-        this.title = title
-        this.description = description
-        this.status = status
-        this.isImportant = isImportant
-        this.createdAt = createdAt
-        this.updatedAt = updatedAt
+  constructor(
+    title,
+    dir,
+    description,
+    date,
+    completed,
+    important,
+  ) {
+    if (!this.id) {
+      this.id = uuid();
     }
-    
-    async createTaks() {
-        //Instacia o DB
-        const db = await sqlite.open({ filename: './database/database.db', driver: sqlite3.Database });
+    this.title = title;
+    this.dir = dir;
+    this.description = description;
+    this.date = date;
+    this.completed = completed;
+    this.important = important;
 
-        //Verfica se o ID pertence a algum Usuário
-        const tasks = await db.all(`INSERT INTO task \ ORDER BY id ASC`);
+  }
 
-        //Verifica se o usuário existe
-        if (!tasks) {
-            const error = {
-                type: 'error',
-                message: 'Task not found'
-            }
-            return error
-        }
+  createTask() {
+    return prisma.task.create({
+      data: {
+        id: this.id,
+        title: this.title,
+        dir: this.dir,
+        description: this.description,
+        date: this.date,
+        completed: this.completed,
+        important: this.important,
+      },
+    })
+  }
 
-        //Retorna infos ao client
-        const sucess = {
-            type: 'sucess',
-            tasks: tasks
-        }
-        db.close()
-        return sucess
+  getTasks() {
+    return prisma.task.findMany()
+  }
+  
+  updateTask() {
+    return prisma.task.update({
+      where: {
+        id: this.id,
+      },
+      data: {
+        title: this.title,
+        dir: this.dir,
+        description: this.description,
+        date: this.date,
+        completed: this.completed,
+        important: this.important,
+      },
+    })
+  }
+  
+  deleteAll() {
+    return prisma.task.deleteMany()
+  }
 
-    }
-    async getTaks() {
-        //Instacia o DB
-        const db = await sqlite.open({ filename: './database/database.db', driver: sqlite3.Database });
 
-        //Verfica se o ID pertence a algum Usuário
-        const tasks = await db.all(`SELECT * \ FROM task \ ORDER BY id ASC`);
-
-        //Verifica se o usuário existe
-        if (!tasks) {
-            const error = {
-                type: 'error',
-                message: 'Task not found'
-            }
-            return error
-        }
-
-        //Retorna infos ao client
-        const sucess = {
-            type: 'sucess',
-            tasks: tasks
-        }
-        db.close()
-        return sucess
-
-    }
-
-    
 }
 
 module.exports = { Task }

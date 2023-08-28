@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Task } from "../../interfaces";
 import { useAppSelector } from "../../store/hooks";
 import Modal from "./Modal";
+import { createTask } from "../Service/task";
 
 const InputCheckbox: React.FC<{
   label: string;
@@ -44,7 +45,6 @@ const ModalCreateTask: React.FC<{
   if (month < 10) {
     month = +("0" + month);
   }
-
   const todayDate: string = year + "-" + month + "-" + day;
   const maxDate: string = year + 1 + "-" + month + "-" + day;
 
@@ -90,23 +90,37 @@ const ModalCreateTask: React.FC<{
     return directories[0];
   });
 
+
+  const taskTitleRef = React.useRef<HTMLInputElement>(null);
+  const taskDateRef = React.useRef<HTMLInputElement>(null);
+  const taskDescriptionRef = React.useRef<HTMLTextAreaElement>(null);
+
+
+
+
   const addNewTaskHandler = (event: React.FormEvent): void => {
     event.preventDefault();
+    const token = localStorage.getItem('token') || "";
+
+    const taskTitle = taskTitleRef.current!.value || "";
+    const taskDate = taskDateRef.current!.value || "";
+    const taskDescription = taskDescriptionRef.current!.value || "";
 
     isTitleValid.current = title.trim().length > 0;
     isDateValid.current = date.trim().length > 0;
 
     if (isTitleValid.current && isDateValid.current) {
       const newTask: Task = {
-        title: title,
+        title: taskTitle,
         dir: selectedDirectory,
-        description: description,
-        date: date,
+        description: taskDescription,
+        date: taskDate,
         completed: isCompleted,
         important: isImportant,
         id: task?.id ? task.id : Date.now().toString(),
       };
       onConfirm(newTask);
+      createTask(newTask, token);
       onClose();
     }
   };
@@ -120,6 +134,7 @@ const ModalCreateTask: React.FC<{
           Title
           <input
             type="text"
+            ref={taskTitleRef}
             placeholder="e.g, study for the test"
             required
             value={title}
@@ -131,6 +146,7 @@ const ModalCreateTask: React.FC<{
           Date
           <input
             type="date"
+            ref={taskDateRef}
             className="w-full"
             value={date}
             required
@@ -143,6 +159,7 @@ const ModalCreateTask: React.FC<{
           Description (optional)
           <textarea
             placeholder="e.g, study for the test"
+            ref={taskDescriptionRef}
             className="w-full"
             value={description}
             onChange={({ target }) => setDescription(target.value)}

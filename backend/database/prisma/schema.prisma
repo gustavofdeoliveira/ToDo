@@ -8,12 +8,13 @@ generator client {
 }
 
 model task {
-  id          Int      @id @default(autoincrement())
-  date        DateTime
+  id          String   @id @default(uuid())
   title       String
+  dir         String
   description String
-  status      String   @default("uncompleted")
-  isImportant Boolean  @default(false)
+  date        String
+  completed   Boolean  @default(false)
+  important   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

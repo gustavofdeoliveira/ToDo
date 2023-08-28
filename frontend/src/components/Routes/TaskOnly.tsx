@@ -8,8 +8,8 @@ import LayoutRoutes from "../Utilities/LayoutRoutes";
 const TaskOnly: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
-
-  const tasks = useAppSelector((store) => store.tasks.tasks);
+  
+  const tasks = useAppSelector((state) => state.tasks.tasks);
 
   const [matchedTask, setMatchedTask] = useState<Task[]>([]);
 

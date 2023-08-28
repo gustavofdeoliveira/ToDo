@@ -1,13 +1,25 @@
 import {
-  Action,
   createSlice,
-  Dispatch,
-  MiddlewareAPI,
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { Task } from "../interfaces";
+import { deleteAllTask, getTasks } from "../components/Service/task";
+
+
+
+const getSavedDirectories = (): string[] => {
+  let dirList: string[] = [];
+    dirList.push("Main");
+  return dirList;
+};
+
+const token = localStorage.getItem("token") || "";
+
+const tasks = getTasks(token);
+
 
 const defaultTasks: Task[] = [
+  
   {
     title: "Task One",
     important: false,
@@ -16,43 +28,14 @@ const defaultTasks: Task[] = [
     dir: "Main",
     completed: true,
     id: "Task1",
-  }
+  },
 ];
-
-const getSavedDirectories = (): string[] => {
-  let dirList: string[] = [];
-  if (localStorage.getItem("directories")) {
-    dirList = JSON.parse(localStorage.getItem("directories")!);
-    const mainDirExists = dirList.some((dir: string) => dir === "Main");
-    if (!mainDirExists) {
-      dirList.push("Main");
-    }
-  } else {
-    dirList.push("Main");
-  }
-
-  if (localStorage.getItem("tasks")) {
-    const savedTasksList = JSON.parse(localStorage.getItem("tasks")!);
-    let dirNotSaved: string[] = [];
-    savedTasksList.forEach((task: Task) => {
-      if (!dirList.includes(task.dir)) {
-        if (!dirNotSaved.includes(task.dir)) {
-          dirNotSaved.push(task.dir);
-        }
-      }
-    });
-    dirList = [...dirList, ...dirNotSaved];
-  }
-  return dirList;
-};
 
 const initialState: {
   tasks: Task[];
   directories: string[];
-} = {
-  tasks: localStorage.getItem("tasks")
-    ? JSON.parse(localStorage.getItem("tasks")!)
-    : defaultTasks,
+} = { 
+  tasks:  defaultTasks,
   directories: getSavedDirectories(),
 };
 
@@ -60,6 +43,10 @@ const tasksSlice = createSlice({
   name: "tasks",
   initialState: initialState,
   reducers: {
+    setTasks(state, action: PayloadAction<Task[]>) {
+      state.tasks = action.payload;
+    },
+
     addNewTask(state, action: PayloadAction<Task>) {
       state.tasks = [action.payload, ...state.tasks];
     },
@@ -92,6 +79,7 @@ const tasksSlice = createSlice({
       currTask.completed = !currTask.completed;
     },
     deleteAllData(state) {
+      deleteAllTask(token);
       state.tasks = [];
       state.directories = ["Main"];
     },
@@ -131,39 +119,3 @@ const tasksSlice = createSlice({
 export const tasksActions = tasksSlice.actions;
 export default tasksSlice.reducer;
 
-export const tasksMiddleware =
-  (store: MiddlewareAPI) => (next: Dispatch) => (action: Action) => {
-    const nextAction = next(action);
-    const actionChangeOnlyDirectories =
-      tasksActions.createDirectory.match(action);
-
-    const isADirectoryAction: boolean = action.type
-      .toLowerCase()
-      .includes("directory");
-
-    if (action.type.startsWith("tasks/") && !actionChangeOnlyDirectories) {
-      const tasksList = store.getState().tasks.tasks;
-      localStorage.setItem("tasks", JSON.stringify(tasksList));
-    }
-    if (action.type.startsWith("tasks/") && isADirectoryAction) {
-      const dirList = store.getState().tasks.directories;
-      localStorage.setItem("directories", JSON.stringify(dirList));
-    }
-
-    if (tasksActions.deleteAllData.match(action)) {
-      localStorage.removeItem("tasks");
-      localStorage.removeItem("directories");
-      localStorage.removeItem("darkmode");
-    }
-
-    if (tasksActions.removeTask.match(action)) {
-      console.log(JSON.parse(localStorage.getItem("tasks")!));
-      if (localStorage.getItem("tasks")) {
-        const localStorageTasks = JSON.parse(localStorage.getItem("tasks")!);
-        if (localStorageTasks.length === 0) {
-          localStorage.removeItem("tasks");
-        }
-      }
-    }
-    return nextAction;
-  };
