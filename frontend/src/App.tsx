@@ -13,11 +13,16 @@ import { getTasks } from "./components/Service/task";
 
 const App: React.FC = () => {
   const [token, setToken] = React.useState<string>("");
+  const dispatch = useAppDispatch();
 
   const loadToken = async (email: string, password:string) => {
     const token = await getAuthenticationToken(email ,password);
     setToken(token.token);
     localStorage.setItem("token", token.token);
+    const {task} = await getTasks(token.token)
+    dispatch(tasksActions.setTasks(task));
+    
+    
     return token.token;
   };
 
@@ -33,7 +38,6 @@ const App: React.FC = () => {
 
   const modal = useAppSelector((state) => state.modal);
 
-  const dispatch = useAppDispatch();
 
   const closeModalCreateTask = () => {
     dispatch(modalActions.closeModalCreateTask());

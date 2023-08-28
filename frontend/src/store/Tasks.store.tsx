@@ -2,8 +2,8 @@ import {
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
+import { completedTask, createTask, deleteAllTask, deleteTask, importTask, updateTask } from "../components/Service/task";
 import { Task } from "../interfaces";
-import { completedTask, createTask, deleteAllTask, deleteTask, getTasks, importTask, updateTask } from "../components/Service/task";
 
 
 
@@ -31,10 +31,8 @@ const tasksSlice = createSlice({
   initialState: initialState,
   reducers: {
     setTasks(state, action: PayloadAction<Task[]>) {
-      
       state.tasks = action.payload;
     },
-
     addNewTask(state, action: PayloadAction<Task>) {
       createTask(action.payload, token);
       state.tasks = [action.payload, ...state.tasks];

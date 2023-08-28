@@ -13,9 +13,6 @@ RUN npm install
 # Copie o restante dos arquivos do projeto
 COPY . .
 
-# Construa o projeto
-RUN npm run build
-
 # Exponha a porta padrão do Next.js
 EXPOSE 3000
 

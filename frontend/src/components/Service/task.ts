@@ -31,6 +31,7 @@ export const getTasks = async (token: string) => {
             Authorization: `Bearer ${token}`,
         },
     });
+    
     return response.data;
 }catch(error){
     console.log(error);}
