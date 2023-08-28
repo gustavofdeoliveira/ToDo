@@ -34,16 +34,18 @@ class Task {
   }
 
   updateTask() {
+    console.log(this);
     return prisma.task.update({
-      where: {
-        id: this.id,
-      },
       data: {
+        id: this.id,
         title: this.title,
         dir: this.dir,
         description: this.description,
         date: this.date,
-        updatedAt: new Date(),
+        updatedAt: date.now(),
+      },
+      where: {
+        id: this.id,
       },
     });
   }

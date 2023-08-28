@@ -55,11 +55,12 @@ const tasksSlice = createSlice({
 
     },
     editTask(state, action: PayloadAction<Task>) {
+      updateTask(action.payload, token);
       const taskId = action.payload.id;
       const newTaskEdited: Task = state.tasks.find(
         (task: Task) => task.id === taskId
       )!;
-      updateTask(action.payload, token);
+      
       const indexTask = state.tasks.indexOf(newTaskEdited);
       state.tasks[indexTask] = action.payload;
     },

@@ -50,7 +50,7 @@ export const deleteAllTask = async (token: string) => {
 }
 
 export const updateTask = async (task: Task, token: string) => {
-    const response = await axios.patch(`${API_URL}/update`, 
+    const response = await axios.put(`${API_URL}/update`, 
     {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -61,6 +61,8 @@ export const updateTask = async (task: Task, token: string) => {
             "dir": task.dir,
             "description": task.description,
             "date": task.date,
+            "completed": task.completed,
+            "important": task.important,
         }
     });
     return response.data;

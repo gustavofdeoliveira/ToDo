@@ -76,9 +76,9 @@ const deleteTask = (req, res) => {
 };
 
 const updateTask = (req, res) => {
-  const { id, title, dir, date, description } = req.body;
+  const { title, dir,  description, date, completed,important } = req.body;
 
-  const task = new taskService.Task(id, title, dir, description, date);
+  const task = new taskService.Task( title, dir, description, date, completed,important);
 
   task.updateTask().then((resul) => {
     if (resul.type === "error") {
