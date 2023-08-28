@@ -6,7 +6,11 @@ interface IAuth {
     token: string;
 }
 
-export const getAuthenticationToken = async (): Promise<IAuth> => {
-    const response = await axios.get(`${API_URL}/token`);
+export const getAuthenticationToken = async (email: string, password: string): Promise<IAuth> => {
+    const response = await axios.post(`${API_URL}/token`, 
+    {
+        "email": email,
+        "password": password,     
+    });
     return response.data;
 }

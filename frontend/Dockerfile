@@ -1,29 +1,23 @@
-# Use an official Node.js runtime as the base image for building
-FROM node:18 as build
+# Utiliza a imagem oficial do Node.js como base
+FROM node:lts
 
-# Set the working directory in the container
-WORKDIR /frontend
+# Diretório de trabalho
+WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to the container
-COPY package*.json ./
+# Copie os arquivos de pacote
+COPY package.json ./
 
-# Install project dependencies
+# Instale as dependências
 RUN npm install
 
-# Copy the rest of the application code to the container
+# Copie o restante dos arquivos do projeto
 COPY . .
 
-# Build the React app
+# Construa o projeto
 RUN npm run build
 
-# Use a lightweight nginx image to serve the built app
-FROM nginx:alpine
+# Exponha a porta padrão do Next.js
+EXPOSE 3000
 
-# Copy the built app from the previous stage to the nginx web root directory
-COPY --from=build /front/build /usr/share/nginx/html
-
-# Expose the port that nginx listens on
-EXPOSE 80
-
-# The default command for the nginx image is to start nginx automatically
-CMD ["nginx", "-g", "daemon off;"]
+# Comando para iniciar o servidor
+CMD ["npm", "run", "start"]

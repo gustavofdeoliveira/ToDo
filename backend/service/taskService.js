@@ -4,7 +4,12 @@ const prisma = new PrismaClient();
 
 class Task {
   constructor(id, title, dir, description, date, completed, important) {
-    this.id = id;
+    if(!id){
+      this.id = uuid();
+    }else{
+      this.id = id;
+    }
+    
     this.title = title;
     this.dir = dir;
     this.description = description;

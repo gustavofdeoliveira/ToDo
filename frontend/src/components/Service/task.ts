@@ -25,8 +25,6 @@ export const createTask = async (task : Task, token: string): Promise<Task> => {
 
 export const getTasks = async (token: string) => {
     try{
-
-    
     const response = await axios.get(`${API_URL}/getTasks`, 
     {
         headers: {

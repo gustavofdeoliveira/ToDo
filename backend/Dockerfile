@@ -1,19 +1,20 @@
-# Use an official Node.js runtime as the base image
-FROM node:18
+# Utiliza a imagem oficial do Node.js como base
+FROM node:lts
 
-# Set the working directory in the container
-WORKDIR /backend
-# Copy package.json and package-lock.json to the container
+# Diretório de trabalho
+WORKDIR /usr/src/app
+
+# Copie os arquivos de pacote
 COPY package*.json ./
 
-# Install project dependencies
+# Instale as dependências
 RUN npm install
 
-# Copy the rest of the application code to the container
+# Copie o restante dos arquivos do projeto
 COPY . .
 
-# Expose the port your backend application listens on
+# Exponha a porta padrão do Next.js
 EXPOSE 3001
 
-# Specify the command to run your backend application
-CMD ["cd database", "prisma format", "prisma generate", "prisma db push", "cd ..", "node", "app.js"]
+# Comando para iniciar o servidor
+CMD ["npm", "run", "start"]

@@ -6,7 +6,7 @@ const authController = require('../controller/authController')
 
 
 //ROUTAS com seus respectivos controlers e middlewares
-router.get('/token', authController.createToken)
+router.post('/token', authController.createToken)
 
 //Exporta o ROUTER
 module.exports = router

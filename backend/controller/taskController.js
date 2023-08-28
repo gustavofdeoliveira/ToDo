@@ -4,10 +4,10 @@ require("express-async-errors");
 
 const createTask = (req, res) => {
   //Pega as infos da requisição
-  const { title, dir, date, description } = req.body;
+  const {id, title, dir, date, description } = req.body;
 
   //Instancia a classe criando uma vaga
-  const task = new taskService.Task(title, dir, description, date);
+  const task = new taskService.Task(id,title, dir, description, date);
 
   //Tratamento das respostas do método da classe
 

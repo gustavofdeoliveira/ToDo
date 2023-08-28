@@ -2,30 +2,6 @@ import React, { useRef, useState } from "react";
 import { Task } from "../../interfaces";
 import { useAppSelector } from "../../store/hooks";
 import Modal from "./Modal";
-import { createTask } from "../Service/task";
-
-const InputCheckbox: React.FC<{
-  label: string;
-  isChecked: boolean;
-  setChecked: (value: React.SetStateAction<boolean>) => void;
-}> = ({ isChecked, setChecked, label }) => {
-  return (
-    <label className="mb-0 flex items-center cursor-pointer">
-      <div className="mr-2 bg-slate-300/[.5] dark:bg-slate-800 w-5 h-5 rounded-full grid place-items-center border border-slate-300 dark:border-slate-700">
-        {isChecked && (
-          <span className="bg-rose-500 w-2 h-2 block rounded-full"></span>
-        )}
-      </div>
-      <span className="order-1 flex-1">{label}</span>
-      <input
-        type="checkbox"
-        className="sr-only"
-        checked={isChecked}
-        onChange={() => setChecked((prev: boolean) => !prev)}
-      />
-    </label>
-  );
-};
 
 const ModalCreateTask: React.FC<{
   onClose: () => void;
@@ -69,21 +45,21 @@ const ModalCreateTask: React.FC<{
   const isTitleValid = useRef<Boolean>(false);
   const isDateValid = useRef<Boolean>(false);
 
-  const [isImportant, setIsImportant] = useState<boolean>(() => {
+  const [isImportant] = useState<boolean>(() => {
     if (task) {
       return task.important;
     }
     return false;
   });
 
-  const [isCompleted, setIsCompleted] = useState<boolean>(() => {
+  const [isCompleted] = useState<boolean>(() => {
     if (task) {
       return task.completed;
     }
     return false;
   });
 
-  const [selectedDirectory, setSelectedDirectory] = useState<string>(() => {
+  const [selectedDirectory] = useState<string>(() => {
     if (task) {
       return task.dir;
     }
@@ -94,8 +70,6 @@ const ModalCreateTask: React.FC<{
   const taskTitleRef = React.useRef<HTMLInputElement>(null);
   const taskDateRef = React.useRef<HTMLInputElement>(null);
   const taskDescriptionRef = React.useRef<HTMLTextAreaElement>(null);
-
-
 
 
   const addNewTaskHandler = (event: React.FormEvent): void => {
