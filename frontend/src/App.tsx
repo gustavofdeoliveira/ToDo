@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-
+import React from "react";
 import Menu from "./components/Menu/Menu";
 import TasksSection from "./components/TasksSection/TasksSection";
 import ModalCreateTask from "./components/Utilities/ModalTask";
@@ -17,23 +16,22 @@ const App: React.FC = () => {
 
   const loadToken = async (email: string, password:string) => {
     const token = await getAuthenticationToken(email ,password);
-    setToken(token.token);
-    localStorage.setItem("token", token.token);
-    const {task} = await getTasks(token.token)
-    dispatch(tasksActions.setTasks(task));
-    
-    
-    return token.token;
+    if(token.token){
+      setToken(token.token);
+      localStorage.setItem("token", token.token);
+      const {task} = await getTasks(token.token)
+      dispatch(tasksActions.setTasks(task));
+      return token.token;
+    }
   };
 
   React.useEffect(() => {
-    
     if (token) {
     localStorage.setItem("token", token);
     dispatch(modalActions.closeModalLogin());
   
     } 
-  }, [token]);
+  });
   
 
   const modal = useAppSelector((state) => state.modal);

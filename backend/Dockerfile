@@ -1,20 +1,24 @@
 # Utiliza a imagem oficial do Node.js como base
 FROM node:lts
 
-# Diretório de trabalho
-WORKDIR /usr/src/app
+# COPY package.json and package-lock.json files
+COPY package.json ./
 
-# Copie os arquivos de pacote
-COPY package*.json ./
+# generated prisma files
+COPY prisma ./prisma/
 
-# Instale as dependências
-RUN npm install
+# COPY ENV variable
+COPY .env ./
 
-# Copie o restante dos arquivos do projeto
+# COPY
 COPY . .
 
-# Exponha a porta padrão do Next.js
-EXPOSE 3001
+RUN npm install
 
-# Comando para iniciar o servidor
-CMD ["npm", "run", "start"]
+RUN npx prisma generate
+
+# Run and expose the server on port 3000
+EXPOSE 3000
+
+# A command to start the server
+CMD npx prisma db push && npm start

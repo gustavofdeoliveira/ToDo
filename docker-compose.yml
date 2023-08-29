@@ -2,7 +2,8 @@ version: '3'
 
 services:
   backend:
-    build: $PWD/backend
+    build: 
+      context: ./backend
     restart: always
     ports:
       - "3001:3001"
@@ -10,7 +11,8 @@ services:
       - postgres
 
   frontend:
-    build: $PWD/frontend
+    build: 
+      context: ./frontend
     restart: always
     ports:
       - "3000:3000"

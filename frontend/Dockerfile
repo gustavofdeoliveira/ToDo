@@ -1,20 +1,23 @@
-# Utiliza a imagem oficial do Node.js como base
+# Use uma imagem de Node.js como base
 FROM node:lts
 
-# Diretório de trabalho
-WORKDIR /usr/src/app
+# Crie e defina o diretório de trabalho no contêiner
+WORKDIR /app
 
-# Copie os arquivos de pacote
-COPY package.json ./
+# Copie o package.json e package-lock.json para o diretório de trabalho
+COPY package*.json ./
 
 # Instale as dependências
 RUN npm install
 
-# Copie o restante dos arquivos do projeto
+# Copie todos os arquivos do projeto para o contêiner
 COPY . .
 
-# Exponha a porta padrão do Next.js
+# Construa o aplicativo React
+RUN npm run build
+
+# Expõe a porta em que a aplicação estará em execução (geralmente a 3000)
 EXPOSE 3000
 
-# Comando para iniciar o servidor
-CMD ["npm", "run", "start"]
+# Comando para iniciar a aplicação quando o contêiner for iniciado
+CMD ["npm", "start"]
