@@ -16,6 +16,7 @@ O projeto é composto por três principais componentes:
 3. **Banco de Dados (PostgreSQL):** Armazena as informações das tarefas, incluindo seus detalhes como título, descrição e status de conclusão.
 
 #### Frontend (React)
+
 A construção do frontend ocorrerá usando a biblioteca React, possibilitando a criação de interfaces de usuário interativas e dinâmicas. Componentes reutilizáveis serão desenvolvidos para organizar a estrutura do aplicativo. O estado do aplicativo será gerenciado por meio de ferramentas como useState ou um gerenciador de estado, como Redux. A comunicação com o backend será realizada por meio de chamadas de API, seja via fetch ou uma biblioteca como o Axios.
 
 ##### Vantagens
@@ -26,6 +27,7 @@ Gerenciamento de Estado Eficiente: O uso do useState ou de soluções de gerenci
 Comunicação Efetiva: A comunicação com o backend é aprimorada por meio de chamadas de API assíncronas.
 
 #### Backend (Node.js)
+
 A camada de backend será construída utilizando o ambiente Node.js, conhecido por sua eficiência na criação de APIs RESTful. O framework Express será adotado para gerenciar rotas e solicitações. Autenticação será implementada usando JSON Web Tokens (JWT), fortalecendo a segurança e autenticando os usuários. Controladores serão definidos para lidar com a lógica de negócios, se comunicando com os modelos que representam os dados no banco de dados PostgreSQL.
 
 ##### Vantagens:
@@ -36,6 +38,7 @@ Estrutura Organizada: A utilização do Express.js facilita a organização de r
 Flexibilidade na Modelagem de Dados: Os modelos do banco de dados permitem estruturar os dados de forma eficiente e escalável.
 
 #### Banco de Dados (PostgreSQL):
+
 O PostgreSQL será empregado como o sistema de gerenciamento de banco de dados para armazenar as informações das tarefas. Uma tabela específica será projetada para conter detalhes como ID, título, descrição e status de cada tarefa.
 
 ##### Fluxo do Login até o Cadastro e Deleção de uma Tarefa:
@@ -46,7 +49,7 @@ Fluxo de Login:
 - O frontend encaminha as credenciais para o backend.
 - O backend verifica as credenciais e emite um token JWT se forem válidas.
 - O token é retornado ao frontend e armazenado para autenticação subsequente.
-  
+
 Fluxo de Cadastro de Tarefa:
 
 - O usuário logado acessa o aplicativo.
@@ -54,7 +57,7 @@ Fluxo de Cadastro de Tarefa:
 - O frontend envia os detalhes para o backend.
 - O backend verifica o token JWT e adiciona a nova tarefa ao banco de dados.
 - A tarefa é exibida na lista do usuário.
-  
+
 Fluxo de Deleção de Tarefa:
 
 - O usuário logado visualiza a lista de tarefas.
@@ -96,6 +99,7 @@ O modelo user representa um usuário. Possui os seguintes campos:
 - email: Endereço de email do usuário, único em toda a tabela, representado como uma string.
 - password: Senha do usuário, representada como uma string.
 - createdAt: Data e hora de criação do usuário, representada como um valor de data e hora.
+
 ### Como Rodar usando Docker Compose
 
 Certifique-se de que você tenha o Docker e o Docker Compose instalados em sua máquina antes de prosseguir.
@@ -106,7 +110,6 @@ Certifique-se de que você tenha o Docker e o Docker Compose instalados em sua m
    git clone https://github.com/gustavofdeoliveira/ToDo-Ponderada.git
    cd Todo
    ```
-    
 2. **Rodando o Docker Compose:**
 
    - No diretório raiz do projeto, onde está o arquivo `docker-compose.yml`, execute o comando:
@@ -119,12 +122,14 @@ Certifique-se de que você tenha o Docker e o Docker Compose instalados em sua m
    - Backend API: http://localhost:3001
    - Frontend UI: http://localhost:3000
    - Banco de Dados PostgreSQL: Host: `localhost`, Porta: `5432`
-
 3. **Configuração Usuário no Banco de Dados:**
+
    - Acesse o bd criado pelo docker, pela url:
-    ```
-     postgresql://user:password@postgres:5432/mydatabase
-     ```
+
+   ```
+    postgresql://user:password@postgres:5432/mydatabase
+   ```
+
    - Pelo `dbeaver`, crie um usuário na tabela `.user` de acordo com as credencias escolhidas.
 4. **Acessando o Frontend:**
    Abra o navegador e acesse `http://localhost:3000` para interagir com a interface de usuário do To-Do List.
@@ -134,7 +139,8 @@ Certifique-se de que você tenha o Docker e o Docker Compose instalados em sua m
    ```
    docker-compose down
    ```
-4. **Acesso no DockerHub:**
-   ``https://hub.docker.com/repository/docker/gustavofdeoliveira/to-do-list/general``
+6. **Acesso no DockerHub:**
+   ``https://hub.docker.com/repository/docker/gustavofdeoliveira/frontend-to-do-list/``
+   ``https://hub.docker.com/repository/docker/gustavofdeoliveira/backend-to-do-list/``
 
 Aproveite o gerenciamento de tarefas simplificado com seu novo To-Do List!

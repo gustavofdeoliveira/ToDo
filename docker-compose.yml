@@ -4,6 +4,7 @@ services:
   backend:
     build: 
       context: ./backend
+    image: gustavofdeoliveira/backend-to-do-list
     restart: always
     ports:
       - "3001:3001"
@@ -13,6 +14,7 @@ services:
   frontend:
     build: 
       context: ./frontend
+    image: gustavofdeoliveira/frontend-to-do-list
     restart: always
     ports:
       - "3000:3000"
